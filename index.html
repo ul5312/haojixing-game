@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F08A1C">
+  <title>好記幸腦力陪玩趣</title>
+  <meta name="description" content="陪家中長輩一起動動腦的八關小遊戲，也幫照顧者留意長輩的日常小變化。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+  <script>
+    // 版本號：每次更新遊戲就改這裡，玩家的瀏覽器才會重新下載新檔，不會沿用舊的暫存
+    window.HJX = { VERSION: '20261029b' };
+    document.write('<link rel="stylesheet" href="css/style.css?v=' + HJX.VERSION + '">');
+  </script>
+</head>
+<body>
+  <main id="app" aria-live="polite"></main>
+
+  <script>
+    [
+      'js/data.js', 'js/mascot.js', 'js/voice.js', 'js/sfx.js',
+      'js/levels/level1.js', 'js/levels/level2.js', 'js/levels/level3.js', 'js/levels/level4.js',
+      'js/levels/level5.js', 'js/levels/level6.js', 'js/levels/level7.js', 'js/levels/level8.js',
+      'js/app.js'
+    ].forEach(function (src) {
+      document.write('<script src="' + src + '?v=' + HJX.VERSION + '"><\/script>');
+    });
+  </script>
+</body>
+</html>

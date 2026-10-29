@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <title>語音稿產生器</title>
+  <style>
+    body { font-family: "Microsoft JhengHei", sans-serif; margin: 24px; }
+    textarea { width: 100%; height: 60vh; font-size: 14px; }
+    table { border-collapse: collapse; margin-top: 16px; }
+    td { border: 1px solid #ddd; padding: 4px 8px; }
+  </style>
+</head>
+<body>
+  <h1>語音稿產生器</h1>
+  <p>列出遊戲中所有會唸的句子。把下方 JSON 存成 <code>audio/lines.json</code>，再執行 <code>python tools/make_voice.py</code>。</p>
+  <p id="info"></p>
+  <textarea id="out" readonly></textarea>
+  <table id="list"></table>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/mascot.js"></script>
+  <script src="../js/voice.js"></script>
+  <script src="../js/sfx.js"></script>
+  <script src="../js/levels/level1.js"></script>
+  <script src="../js/levels/level2.js"></script>
+  <script src="../js/levels/level3.js"></script>
+  <script src="../js/levels/level4.js"></script>
+  <script src="../js/levels/level5.js"></script>
+  <script src="../js/levels/level6.js"></script>
+  <script src="../js/levels/level7.js"></script>
+  <script src="../js/levels/level8.js"></script>
+  <script>
+    // app.js 會操作遊戲畫面，這裡只借用它的 appLines，先放一個假的 #app
+    var stub = document.createElement('main');
+    stub.id = 'app';
+    stub.hidden = true;
+    document.body.appendChild(stub);
+  </script>
+  <script src="../js/app.js"></script>
+  <script>
+    var titles = HJX.TITLES;
+    var all = HJX.appLines(titles);
+    Object.keys(HJX.games).forEach(function (k) {
+      if (HJX.games[k].lines) all = all.concat(HJX.games[k].lines(titles));
+    });
+
+    var seen = {};
+    var lines = [];
+    var clash = [];
+    all.forEach(function (raw) {
+      var text = HJX.voice.clean(raw);
+      if (!text) return;
+      var h = HJX.voice.hash(text);
+      if (seen[h] === text) return;
+      if (seen[h]) clash.push(text + ' ／ ' + seen[h]);
+      seen[h] = text;
+      lines.push({ h: h, text: text });
+    });
+
+    var chars = lines.reduce(function (n, x) { return n + x.text.length; }, 0);
+    document.getElementById('info').textContent =
+      '共 ' + lines.length + ' 句、' + chars + ' 字' + (clash.length ? '　⚠️ 檔名衝突：' + clash.join('；') : '');
+    document.getElementById('out').value = JSON.stringify(lines, null, 1);
+    document.getElementById('list').innerHTML = lines.map(function (x, i) {
+      return '<tr><td>' + (i + 1) + '</td><td>' + x.h + '</td><td>' + x.text + '</td></tr>';
+    }).join('');
+    window.HJX_LINES = lines;
+  </script>
+</body>
+</html>
