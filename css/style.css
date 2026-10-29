@@ -270,11 +270,12 @@ p { margin: 0 0 .8em; }
 .hobby .h-icon { font-size: 2.8rem; flex: none; }
 
 /* 種花 */
-.garden { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 10px 0 16px; }
+/* minmax(0, 1fr)：植物長大也不會把格子撐寬、擠出畫面 */
+.garden { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 10px 0 16px; }
 .pot {
   position: relative;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-  min-height: 190px; padding: 8px 4px 12px;
+  min-height: 190px; padding: 8px 4px 12px; overflow: hidden;
   border: 3px dashed var(--line); border-radius: var(--radius);
   background: #fff; font: inherit; cursor: pointer;
 }

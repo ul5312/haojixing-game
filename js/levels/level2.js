@@ -21,7 +21,14 @@ HJX.games = HJX.games || {};
   ];
 
   var DRUM_HITS = 8;
-  var PLANT = ['🟤', '🌱', '🌿', '🌷', '🌻'];
+  // 種子 → 前三次都是綠葉、一次比一次大 → 第四次才開花，避免還沒澆完就看起來已經開花
+  var PLANT = [
+    { icon: '🟤', size: '2.4rem' },
+    { icon: '🌱', size: '2.4rem' },
+    { icon: '🌿', size: '3rem' },
+    { icon: '🌿', size: '3.8rem' },
+    { icon: '🌻', size: '4.2rem' }
+  ];
 
   function shuffle(a) {
     a = a.slice();
@@ -89,7 +96,7 @@ HJX.games = HJX.games || {};
         '<div class="garden">' +
           pots.map(function (_, i) {
             return '<button class="pot" data-p="' + i + '">' +
-              '<span class="plant">' + PLANT[0] + '</span><span class="pot-base"></span>' +
+              '<span class="plant" style="font-size:' + PLANT[0].size + '">' + PLANT[0].icon + '</span><span class="pot-base"></span>' +
             '</button>';
           }).join('') +
         '</div>' +
@@ -102,7 +109,8 @@ HJX.games = HJX.games || {};
           pots[i]++;
           HJX.sfx.drop();
           var plant = b.querySelector('.plant');
-          plant.textContent = PLANT[pots[i]];
+          plant.textContent = PLANT[pots[i]].icon;
+          plant.style.fontSize = PLANT[pots[i]].size;
           plant.classList.remove('grow'); void plant.offsetWidth; plant.classList.add('grow');
           var drop = document.createElement('span');
           drop.className = 'drop'; drop.textContent = '💧';
